@@ -1,11 +1,9 @@
-setwd('C://XXX')
 
 library(ggpubr)
 library(ggplot2)
 library(reshape2)
 library(extrafont)
 loadfonts(device = "pdf")
-
 library(ggshapes)
 library(ape)
 library(ggdendro)
@@ -13,17 +11,19 @@ library(dendextend)
 library(RColorBrewer)
 library(scales)
 
-df <- read.csv("XXX.txt",header = TRUE,skip=0,stringsAsFactors=F,row.names=NULL,sep = "\t")
+testpath <- outpath <- 'C://XXX' #change your work dir
+setwd(testpath) 
+
+df <- read.csv("XXX.txt",header = TRUE,skip=0,stringsAsFactors=F,row.names=NULL,sep = "\t") #change your txt file
 colnames(df)[2] <- "V2"
 df <- df[1:23,]
 df_gid <- df$V2
-
 
 rawdata <- df[, 4:dim(df)[2]]
 rawdata <- rawdata[,-45]
 rownames(rawdata) <- df[,2]
 
-D <- dist(rawdata, method = "euclidean")
+D <- dist(rawdata, method = "euclidean") 
 a <- as.matrix(rawdata)
 D <- a%*%t(a)
 D_1 <- apply(D,c(1,2),function(point) {1/(point+1)})
@@ -65,5 +65,4 @@ gg1 <- ggballoonplot(data,x="variable",y="V2",size=3,fill="value",shape = 22)+
 gg1
 plot_tree <- ggarrange(gg0, gg1, widths = c(1,1.5), nrow=1)
 plot_tree
-ggsave(filename=paste(outpath,"//","plot_tree.pdf", sep=""),plot=plot_tree,
-       limitsize=T,width = 10,height = 4)
+ggsave(filename=paste(outpath,"//","plot_tree.pdf", sep=""),plot=plot_tree,limitsize=T,width = 10,height = 4) # change your program name
